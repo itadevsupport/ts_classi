@@ -16,9 +16,12 @@ abstract class Animale {
     abstract emettiVerso(): void;
 }
 
-class Leone extends Animale {
-    constructor(nome: string, eta: number, sesso: string, private carniPreferite: string[]) {
+class Leone extends Animale implements Corri, Salta {
+    velocitaMediaKmh: number;
+
+    constructor(nome: string, eta: number, sesso: string, private carniPreferite: string[], velocita: number) {
         super(nome, eta, sesso);
+        this.velocitaMediaKmh = velocita;
     }
 
     dichiaraSesso(): void {
@@ -35,11 +38,21 @@ class Leone extends Animale {
     emettiVerso(): void {
         console.log('Rooooooar');
     }
+
+    corri(): void {
+        console.log(`💨sto correndo velocissimo a ${this.velocitaMediaKmh}`);
+    }
+    salta(): void {
+        console.log('sto saltando 🦁');
+    }
 }
 
-class Gatto extends Animale{
-    constructor(nome: string, eta: number, sesso: string, coccolePreferite: string[]){
+class Gatto extends Animale implements Corri, Salta{
+    velocitaMediaKmh: number;
+
+    constructor(nome: string, eta: number, sesso: string, coccolePreferite: string[], velocita: number){
         super(nome, eta, sesso);
+        this.velocitaMediaKmh = velocita;
     }
 
     // metodo solo del Gatto
@@ -51,6 +64,43 @@ class Gatto extends Animale{
     emettiVerso(): void {
         console.log('Meoooow');
     }
+
+    corri(): void {
+        console.log(`sto correndo a circa ${this.velocitaMediaKmh}`);
+    }
+    salta(): void {
+        console.log('sto saltando 🐱');
+    }
+}
+
+class Piccione extends Animale implements Vola {    
+    velocitaMaxKmh: number;
+
+    constructor(nome: string, eta: number, sesso: string, velocita: number) {
+        super(nome, eta, sesso);
+        this.velocitaMaxKmh = velocita;
+    }
+    emettiVerso(): void {
+        console.log('urrrruuuu urrrruuuu');
+    }
+    spiccaIlVolo(): void {
+        console.log('sto volandoooo...!');
+    }
+}
+
+// interfaccia Vola
+interface Vola {
+    velocitaMaxKmh: number;
+    spiccaIlVolo(): void; // il metodo dell'interfaccia deve essere implementato nella classe che ha l'interfaccia e non qui
+}
+
+interface Corri {
+    velocitaMediaKmh: number;
+    corri(): void;
+}
+
+interface Salta {
+    salta(): void;
 }
 
 // non posso più istanziare oggetti di Animale in quanto la classe è astratta!
@@ -58,15 +108,20 @@ class Gatto extends Animale{
 // a1.presentati();
 // a1.cambiaNome('lucia');
 
-const l: Leone = new Leone('antonio', 50, 'maschio', ['zebra', 'gazzella']);
+const l: Leone = new Leone('antonio', 50, 'maschio', ['zebra', 'gazzella'], 80);
 l.cambiaNome('ezio');
 l.presentati();
 
 // Leone.infoSullaClasse();
 // Animale.infoSullaClasse();
 
-const g = new Gatto('monroe', 5, 'femmina', ['grattini']);
+const g = new Gatto('monroe', 5, 'femmina', ['grattini'], 48);
 g.presentati();
 g.emettiVerso();
 g.faiLeFusa();
+
+const p : Piccione = new Piccione('Urru', 2, 'femmina', 80);
+p.emettiVerso();
+p.spiccaIlVolo();
+
 
